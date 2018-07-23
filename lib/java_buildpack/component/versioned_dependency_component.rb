@@ -36,9 +36,12 @@ module JavaBuildpack
       def initialize(context, &version_validator)
         super(context)
 
+        oracleapm = 'Oracleapm Agent'
         if supports?
-          @version, @uri = JavaBuildpack::Repository::ConfiguredItem.find_item(@component_name, @configuration,
+          if oracleapm != @component_name
+            @version, @uri = JavaBuildpack::Repository::ConfiguredItem.find_item(@component_name, @configuration,
                                                                                &version_validator)
+          end
         else
           @version = nil
           @uri     = nil
