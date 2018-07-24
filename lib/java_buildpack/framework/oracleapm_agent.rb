@@ -67,6 +67,11 @@ module JavaBuildpack
           shell "echo oracle.apmaas.common.pathToCertificate = ./apm.cer >>  #{target_directory}/apmagent/config/AgentStartup.properties"
         end
 
+        noCertificate = credentials[NO_CERTIFICATE]
+        if not_blank?(noCertificate)
+          shell "echo oracle.apmaas.common.trustRemoteSSLHost=true >>  #{target_directory}/apmagent/config/AgentStartup.properties"
+        end
+
       end
 
 
@@ -188,10 +193,11 @@ module JavaBuildpack
             INSECURE            = 'insecure'
             H                   = 'h'
             CERTIFICATE         = 'gateway-certificate'
+            NO_CERTIFICATE         = 'no-certificate'
 
             private_constant :FILTER, :OMC_URL, :TENANT_ID, :REGKEY, :GATEWAY_HOST, :GATEWAY_PORT,
             :CLASSIFICATIONS, :PROXY_HOST, :PROXY_PORT,  :PROXY_AUTH_TOKEN, :ADDITIONAL_GATEWAY,
-            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE
+            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE, :NO_CERTIFICATE
 
     end
   end
