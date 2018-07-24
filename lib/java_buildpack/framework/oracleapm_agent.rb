@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Cloud Foundry Java Buildpack
-# Copyright 2013-2017 the original author or authors.
+# Copyright 2013-2018 the original author or authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,9 +67,19 @@ module JavaBuildpack
           shell "echo oracle.apmaas.common.pathToCertificate = ./apm.cer >>  #{target_directory}/apmagent/config/AgentStartup.properties"
         end
 
-        noCertificate = credentials[NO_CERTIFICATE]
-        if not_blank?(noCertificate)
-          shell "echo oracle.apmaas.common.trustRemoteSSLHost=true >>  #{target_directory}/apmagent/config/AgentStartup.properties"
+        noCertificate = credentials[TRUST_HOST]
+        if not_null?(noCertificate)
+          target_directory = @droplet.sandbox
+          shell "echo oracle.apmaas.common.trustRemoteSSLHost = true >>  #{target_directory}/apmagent/config/AgentStartup.properties"
+          shell "echo oracle.apmaas.common.disableHostnameVerification = true >>  #{target_directory}/apmagent/config/AgentStartup.properties"
+        end
+
+        add_startup_props = credentials[STARTUP_PROPERTIES]
+        if not_blank?(add_startup_props)
+          target_directory = @droplet.sandbox
+          for property in add_startup_props.split(',')
+            shell "echo #{property} >>  #{target_directory}/apmagent/config/AgentStartup.properties"
+          end
         end
 
       end
@@ -193,11 +203,12 @@ module JavaBuildpack
             INSECURE            = 'insecure'
             H                   = 'h'
             CERTIFICATE         = 'gateway-certificate'
-            NO_CERTIFICATE         = 'no-certificate'
+            TRUST_HOST          = 'trust-host'
+            STARTUP_PROPERTIES  = 'startup-properties'
 
             private_constant :FILTER, :OMC_URL, :TENANT_ID, :REGKEY, :GATEWAY_HOST, :GATEWAY_PORT,
             :CLASSIFICATIONS, :PROXY_HOST, :PROXY_PORT,  :PROXY_AUTH_TOKEN, :ADDITIONAL_GATEWAY,
-            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE, :NO_CERTIFICATE
+            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE, :TRUST_HOST, :STARTUP_PROPERTIES
 
     end
   end
