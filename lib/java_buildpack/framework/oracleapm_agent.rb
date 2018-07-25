@@ -100,7 +100,7 @@ module JavaBuildpack
        puts "proxy_port : #{proxy_port}"
        puts "classifications : #{classifications}"
        puts "proxy_auth_token : #{proxy_auth_token}"
-       puts "additional_gateway : #{additional_gateway}"
+       puts "additional_gateways : #{additional_gateway}"
        puts "java_home : #{@droplet.java_home.root}"
        puts "v : #{v}"
        puts "h : #{hostname}"
