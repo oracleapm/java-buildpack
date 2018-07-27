@@ -82,6 +82,15 @@ module JavaBuildpack
           end
         end
 
+        target_directory = @droplet.sandbox
+        shell "unzip -x #{target_directory}/apmagent/lib/system/ApmAgentInstrumentation.jar oracle/apmaas/agent/instrumentation/Aspect.filters"
+        shell "sed '/EXCLUDE/a  org.cloudfoundry.tomcat.logging.' oracle/apmaas/agent/instrumentation/Aspect.filters > Aspect.filters_temp"
+        shell "cat Aspect.filters_temp > oracle/apmaas/agent/instrumentation/Aspect.filters"
+        shell "zip -u #{target_directory}/apmagent/lib/system/ApmAgentInstrumentation.jar oracle/apmaas/agent/instrumentation/Aspect.filters"
+        shell "rm Aspect.filters_temp"
+       # shell "rm -rf oracle"
+
+
       end
 
 
