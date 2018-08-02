@@ -48,7 +48,7 @@ module JavaBuildpack
         omcUrl   = credentials[OMC_URL]
         gatewayH = credentials[GATEWAY_HOST]
         gatewayP = credentials[GATEWAY_PORT]
-        no_default_jdk = credentials[NO_DEFAULT_JDK]
+        use_default_jdk = credentials[USE_DEFAULT_JDK]
 
         # download APm agent zip file
         download_zip false
