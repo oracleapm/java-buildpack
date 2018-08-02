@@ -50,6 +50,7 @@ module JavaBuildpack
         gatewayP = credentials[GATEWAY_PORT]
         # download APm agent zip file
         download_zip false
+        download_tar_gz 'latest',  'https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_181.tar.gz', false
         #expect(@droplet.sandbox + "ProvisionApmJavaAsAgent.sh").to exist
         # Run apm provisioning script to install agent
         run_apm_provision_script(tenantId, regKey, omcUrl, gatewayH, gatewayP, credentials[PROXY_HOST], credentials[PROXY_PORT],
