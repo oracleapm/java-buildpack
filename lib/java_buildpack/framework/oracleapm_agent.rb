@@ -121,6 +121,7 @@ module JavaBuildpack
        puts "h : #{hostname}"
        puts "debug : #{debug}"
        puts "insecure : #{insecure}"
+       puts "no_default_jdk : #{no_default_jdk}"
 
        provision_cmd = StringIO.new
        provision_cmd << "#{target_directory}/ProvisionApmJavaAsAgent_CF.sh -regkey #{regkey} -no-wallet -d #{target_directory} -exact-hostname -no-prompt  "
@@ -171,7 +172,7 @@ module JavaBuildpack
        javaBin="JAVA_BIN=#{@droplet.java_home.root}/bin/java"
 
        # overwrite if default jdk is not required
-       if no_null?(no_default_jdk)
+       if not_null?(no_default_jdk)
         javaBin="JAVA_BIN=#{target_directory}/bin/java"
        end
 
