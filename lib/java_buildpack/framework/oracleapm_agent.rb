@@ -164,9 +164,7 @@ module JavaBuildpack
        puts "command : #{provision_cmd.string}"
        Dir.chdir target_directory do
        #shell "#{target_directory}/ProvisionApmJavaAsAgent.sh -regkey #{regkey} -no-wallet -ph #{proxy_host} -d #{target_directory} -exact-hostname -no-prompt -omc-server-url #{omc_url} -tenant-id  #{tenant_id} -java-home #{@droplet.java_home.root} 2>&1"
-
-       javaBin="JAVA_BIN=#{target_directory}/bin/java"
-
+       javaBin="JAVA_BIN=#{@droplet.java_home.root}/bin/java"
        puts " java bin path : #{javaBin}"
        shell "echo #{javaBin} > ProvisionApmJavaAsAgent_CF.sh"
        shell "sed -e 's/locate_java$/#locate_java/g' ProvisionApmJavaAsAgent.sh > ProvisionApmJavaAsAgent_tmp.sh"
