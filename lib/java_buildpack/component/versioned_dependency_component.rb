@@ -1,3 +1,4 @@
+# Encoding: utf-8
 # Cloud Foundry Java Buildpack
 # Copyright 2013-2017 the original author or authors.
 #
@@ -35,9 +36,12 @@ module JavaBuildpack
       def initialize(context, &version_validator)
         super(context)
 
+        oracleapm = 'Oracleapm Agent'
         if supports?
-          @version, @uri = JavaBuildpack::Repository::ConfiguredItem.find_item(@component_name, @configuration,
+          if oracleapm != @component_name
+            @version, @uri = JavaBuildpack::Repository::ConfiguredItem.find_item(@component_name, @configuration,
                                                                                &version_validator)
+          end
         else
           @version = nil
           @uri     = nil
@@ -77,6 +81,10 @@ module JavaBuildpack
       # @return [Void]
       def download_tar(strip_top_level = true, target_directory = @droplet.sandbox, name = @component_name)
         super(@version, @uri, strip_top_level, target_directory, name)
+      end
+
+      def download_tar_gz(version, uri, strip_top_level = true, target_directory = @droplet.sandbox, name = @component_name)
+        super(version, uri, strip_top_level, target_directory, name)
       end
 
       # Downloads a given ZIP file and expands it.

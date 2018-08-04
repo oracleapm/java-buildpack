@@ -58,6 +58,7 @@ frameworks:
   - "JavaBuildpack::Framework::MariaDbJDBC"
   - "JavaBuildpack::Framework::MetricWriter"
   - "JavaBuildpack::Framework::NewRelicAgent"
+  - "JavaBuildpack::Framework::OracleapmAgent"
   - "JavaBuildpack::Framework::PlayFrameworkAutoReconfiguration"
   - "JavaBuildpack::Framework::PlayFrameworkJPAPlugin"
   - "JavaBuildpack::Framework::PostgresqlJDBC"

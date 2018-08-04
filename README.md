@@ -93,6 +93,7 @@ To learn how to configure various properties of the buildpack, follow the "Confi
   * [Multiple Buildpack](docs/framework-multi_buildpack.md)
   * [Metric Writer](docs/framework-metric_writer.md) ([Configuration](docs/framework-metric_writer.md#configuration))
   * [New Relic Agent](docs/framework-new_relic_agent.md) ([Configuration](docs/framework-new_relic_agent.md#configuration))
+  * [OracleAPM Agent](docs/framework-oracleapm_agent.md) ([Configuration](docs/framework-oracleapm_agent.md#configuration))
   * [Play Framework Auto Reconfiguration](docs/framework-play_framework_auto_reconfiguration.md) ([Configuration](docs/framework-play_framework_auto_reconfiguration.md#configuration))
   * [Play Framework JPA Plugin](docs/framework-play_framework_jpa_plugin.md) ([Configuration](docs/framework-play_framework_jpa_plugin.md#configuration))
   * [PostgreSQL JDBC](docs/framework-postgresql_jdbc.md) ([Configuration](docs/framework-postgresql_jdbc.md#configuration))
