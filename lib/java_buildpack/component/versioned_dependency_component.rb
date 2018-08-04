@@ -82,6 +82,10 @@ module JavaBuildpack
         super(@version, @uri, strip_top_level, target_directory, name)
       end
 
+      def download_tar_gz(version, uri, strip_top_level = true, target_directory = @droplet.sandbox, name = @component_name)
+        super(version, uri, strip_top_level, target_directory, name)
+      end
+
       # Downloads a given ZIP file and expands it.
       #
       # @param [Boolean] strip_top_level whether to strip the top-level directory when expanding. Defaults to +true+.

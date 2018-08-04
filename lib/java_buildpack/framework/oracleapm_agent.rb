@@ -48,15 +48,21 @@ module JavaBuildpack
         omcUrl   = credentials[OMC_URL]
         gatewayH = credentials[GATEWAY_HOST]
         gatewayP = credentials[GATEWAY_PORT]
+        use_default_jdk = credentials[USE_DEFAULT_JDK]
 
         # download APm agent zip file
         download_zip false
+
+        # By default download required JDK but if explicitly specified to use default then do not download
+        if !not_null?(use_default_jdk)
+          download_tar_gz 'latest',  'https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_181.tar.gz', false
+        end
 
         #expect(@droplet.sandbox + "ProvisionApmJavaAsAgent.sh").to exist
         # Run apm provisioning script to install agent
         run_apm_provision_script(tenantId, regKey, omcUrl, gatewayH, gatewayP, credentials[PROXY_HOST], credentials[PROXY_PORT],
                                  credentials[CLASSIFICATIONS], credentials[PROXY_AUTH_TOKEN], credentials[ADDITIONAL_GATEWAY],
-                                 credentials[V], credentials[DEBUG], credentials[INSECURE], credentials[H])
+                                 credentials[V], credentials[DEBUG], credentials[INSECURE], credentials[H], use_default_jdk)
 
         cert = credentials[CERTIFICATE]
         # use user specified certificates
@@ -97,7 +103,7 @@ module JavaBuildpack
 
 
       def run_apm_provision_script(tenant_id, regkey, omc_url, gateway_host, gateway_port, proxy_host, proxy_port,
-                                   classifications, proxy_auth_token, additional_gateway, v, debug, insecure, hostname,
+                                   classifications, proxy_auth_token, additional_gateway, v, debug, insecure, hostname, use_default_jdk,
                                    target_directory = @droplet.sandbox,
                                    name = @component_name)
        shell "chmod +x #{target_directory}/ProvisionApmJavaAsAgent.sh"
@@ -116,6 +122,7 @@ module JavaBuildpack
        puts "h : #{hostname}"
        puts "debug : #{debug}"
        puts "insecure : #{insecure}"
+       puts "use_default_jdk : #{use_default_jdk}"
 
        provision_cmd = StringIO.new
        provision_cmd << "#{target_directory}/ProvisionApmJavaAsAgent_CF.sh -regkey #{regkey} -no-wallet -d #{target_directory} -exact-hostname -no-prompt  "
@@ -163,7 +170,13 @@ module JavaBuildpack
        puts "command : #{provision_cmd.string}"
        Dir.chdir target_directory do
        #shell "#{target_directory}/ProvisionApmJavaAsAgent.sh -regkey #{regkey} -no-wallet -ph #{proxy_host} -d #{target_directory} -exact-hostname -no-prompt -omc-server-url #{omc_url} -tenant-id  #{tenant_id} -java-home #{@droplet.java_home.root} 2>&1"
-       javaBin="JAVA_BIN=#{@droplet.java_home.root}/bin/java"
+
+       javaBin="JAVA_BIN=#{target_directory}/bin/java"
+       # overwrite if default jdk is required
+       if not_null?(use_default_jdk)
+         javaBin="JAVA_BIN=#{@droplet.java_home.root}/bin/java"
+       end
+
        puts " java bin path : #{javaBin}"
        shell "echo #{javaBin} > ProvisionApmJavaAsAgent_CF.sh"
        shell "sed -e 's/locate_java$/#locate_java/g' ProvisionApmJavaAsAgent.sh > ProvisionApmJavaAsAgent_tmp.sh"
@@ -215,10 +228,11 @@ module JavaBuildpack
             CERTIFICATE         = 'gateway-certificate'
             TRUST_HOST          = 'trust-host'
             STARTUP_PROPERTIES  = 'startup-properties'
+            USE_DEFAULT_JDK     = 'use-default-jdk'
 
             private_constant :FILTER, :OMC_URL, :TENANT_ID, :REGKEY, :GATEWAY_HOST, :GATEWAY_PORT,
             :CLASSIFICATIONS, :PROXY_HOST, :PROXY_PORT,  :PROXY_AUTH_TOKEN, :ADDITIONAL_GATEWAY,
-            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE, :TRUST_HOST, :STARTUP_PROPERTIES
+            :AGENT_ZIP_URI, :V, :DEBUG, :INSECURE, :H, :CERTIFICATE, :TRUST_HOST, :STARTUP_PROPERTIES, :USE_DEFAULT_JDK
 
     end
   end
