@@ -78,6 +78,7 @@ module Package
       'memory_calculator'                   => 'Memory Calculator',
       'metric_writer'                       => 'Metric Writer',
       'new_relic_agent'                     => 'New Relic Agent',
+      'oracleapm_agent'                     => 'Oracle APM Agent',
       'postgresql_jdbc'                     => 'PostgreSQL JDBC Driver',
       'protect_app_security_provider'       => 'Gemalto ProtectApp Security Provider',
       'redis_store'                         => 'Redis Session Store',
