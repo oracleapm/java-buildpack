@@ -49,7 +49,8 @@ module JavaBuildpack
         gatewayH = credentials[GATEWAY_HOST]
         gatewayP = credentials[GATEWAY_PORT]
         # download APm agent zip file
-        download_zip false
+        download_zip(false, @droplet.sandbox, 'Oracle APM Agent')
+
         #expect(@droplet.sandbox + "ProvisionApmJavaAsAgent.sh").to exist
         # Run apm provisioning script to install agent
         run_apm_provision_script(tenantId, regKey, omcUrl, gatewayH, gatewayP, credentials[PROXY_HOST], credentials[PROXY_PORT],
